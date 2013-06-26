@@ -15,10 +15,10 @@ name: POEx-Tickit
 provides:
   POEx::Tickit:
     file: lib/POEx/Tickit.pm
-    version: 0.01
+    version: 0.02
 requires:
   POE: 0
-  Tickit: 0.18
+  Tickit: 0.32
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.01
+version: 0.02

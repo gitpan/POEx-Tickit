@@ -1,4 +1,8 @@
 Revision history for POEx-Tickit
 
+0.02    CHANGES:
+         * Updated for Tickit 0.32's structural key/mouse events
+         * Implement Tickit->timer() API
+
 0.01    First version, released on an unsuspecting world.
 

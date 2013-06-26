@@ -7,7 +7,7 @@ my $build = Module::Build->new(
    module_name => 'POEx::Tickit',
    requires => {
       'POE' => 0,
-      'Tickit' => '0.18',
+      'Tickit' => '0.32',
    },
    build_requires => {
       'Test::HexString' => 0,

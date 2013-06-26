@@ -8,7 +8,7 @@ WriteMakefile
                    'POE' => 0,
                    'Test::HexString' => 0,
                    'Test::More' => '0.88',
-                   'Tickit' => '0.18'
+                   'Tickit' => '0.32'
                  },
   'INSTALLDIRS' => 'site',
   'EXE_FILES' => [],

@@ -9,7 +9,7 @@ use strict;
 use warnings;
 use base qw( Tickit );
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 use Carp;
 
@@ -57,6 +57,7 @@ sub new
             _start   => "_poe_start",
             sigwinch => "_poe_sigwinch",
             input    => "_poe_input",
+            timer    => "_poe_timer",
             timeout  => "_poe_timeout",
             _stop    => "_poe_stop",
          },
@@ -117,10 +118,29 @@ sub _poe_timeout
    }
 }
 
+sub _poe_timer
+{
+   my $self = $_[OBJECT];
+   my ( $mode, $amount, $code ) = @_[ARG0..$#_];
+   if( $mode eq "after" ) {
+      $_[KERNEL]->delay_set( invoke => $amount, $code );
+   }
+   elsif( $mode eq "at" ) {
+      $_[KERNEL]->alarm_set( invoke => $amount, $code );
+   }
+}
+
 sub later
 {
    my $self = shift;
    POE::Kernel->post( $self->{session_alias}, invoke => $_[0] );
+}
+
+sub timer
+{
+   my $self = shift;
+   my ( $mode, $amount, $code ) = @_;
+   POE::Kernel->post( $self->{session_alias}, timer => $mode, $amount, $code );
 }
 
 sub stop

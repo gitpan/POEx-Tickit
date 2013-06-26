@@ -29,12 +29,12 @@ my @mouse_events;
 
 no warnings 'redefine';
 *Tickit::on_key = sub {
-   my ( $self, $type, $str ) = @_;
-   push @key_events, [ $type => $str ];
+   my ( $self, $keyev ) = @_;
+   push @key_events, $keyev;
 };
 *Tickit::on_mouse = sub {
-   my ( $self, $ev, $button, $line, $col ) = @_;
-   push @mouse_events, [ $ev => $button, $line, $col ];
+   my ( $self, $mouseev ) = @_;
+   push @mouse_events, $mouseev;
 };
 
 POE::Session->create(
@@ -85,13 +85,13 @@ POE::Session->create(
 
 POE::Kernel->run;
 
-is_deeply( shift @key_events, [ text => "h" ], 'on_key h' );
-is_deeply( shift @key_events, [ key => "C-a" ], 'on_key Ctrl-A' );
-is_deeply( shift @key_events, [ key => "M-X" ], 'on_key Alt-X' );
-is_deeply( shift @key_events, [ key => "M-Y" ], 'on_key Alt-Y split write' );
-is_deeply( shift @key_events, [ text => "\x{109}" ], 'on_key reads UTF-8' );
+is_deeply( shift @key_events, { type => "text", str => "h",   mod => 0 }, 'on_key h' );
+is_deeply( shift @key_events, { type => "key",  str => "C-a", mod => 4 }, 'on_key Ctrl-A' );
+is_deeply( shift @key_events, { type => "key",  str => "M-X", mod => 2 }, 'on_key Alt-X' );
+is_deeply( shift @key_events, { type => "key",  str => "M-Y", mod => 2 }, 'on_key Alt-Y split write' );
+is_deeply( shift @key_events, { type => "text", str => "\x{109}", mod => 0 }, 'on_key reads UTF-8' );
 
 # Tickit::Term reports position 0-based
-is_deeply( shift @mouse_events, [ press => 1, 10, 20 ], 'on_mouse press(1) @20,10' );
+is_deeply( shift @mouse_events, { type => "press", button => 1, line => 10, col => 20, mod => 0 }, 'on_mouse press(1) @20,10' );
 
 done_testing;
